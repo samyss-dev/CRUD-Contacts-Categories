@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  contacts Contact[]
+
+  @@map("categories")
+}
+
+model Contact {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+  phone String
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map("contacts")
+}
